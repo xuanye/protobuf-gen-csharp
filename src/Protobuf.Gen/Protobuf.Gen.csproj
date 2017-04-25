@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <DebugType>portable</DebugType>
+    <AssemblyName>Protobuf.Gen</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>Protobuf.Gen</PackageId>
+    <RuntimeIdentifiers>win10-x64;osx.10.10-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="System.Console" Version="4.0.0" />
+    <PackageReference Include="Microsoft.NETCore.Runtime.CoreCLR" Version="1.0.5" />
+    <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy" Version="1.0.3" />
+  </ItemGroup>
+
+
+</Project>
