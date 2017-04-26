@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard1.6</TargetFramework>
+        <AssemblyName>Protobuf.Gen.Amp</AssemblyName>
+        <PackageId>Protobuf.Gen.Amp</PackageId>
+        <DefineConstants>$(DefineConstants);DOTNETCORE</DefineConstants>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <ProjectReference Include="..\Protobuf.Gen.Core\Protobuf.Gen.Core.csproj" />
+    </ItemGroup>
+</Project>
