@@ -21,5 +21,5 @@ versionNumber="1.0.0"
 dotnet pack ./Protobuf.Gen.Core/Protobuf.Gen.Core.csproj -c Release -o ../$artifactsFolder
 
 if [ "$TRAVIS_BRANCH" == "master" ]; then
-    dotnet nuget push ./$artifactsFolder/Vulcan.Rest.${versionNumber}.nupkg -k $NUGET_KEY -s https://www.nuget.org
+    dotnet nuget push ./$artifactsFolder/Protobuf.Gen.Core.${versionNumber}.nupkg -k $NUGET_KEY -s https://www.nuget.org
 fi
