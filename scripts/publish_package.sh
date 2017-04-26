@@ -2,7 +2,7 @@ set -ex
 
 cd $(dirname $0)/../src/
 
-artifactsFolder="../artifacts/"
+artifactsFolder="../artifacts"
 
 if [ -d $artifactsFolder ]; then
   rm -R $artifactsFolder
