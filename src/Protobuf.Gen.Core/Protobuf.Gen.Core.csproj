@@ -5,6 +5,13 @@
     <AssemblyName>Protobuf.Gen.Core</AssemblyName>
     <PackageId>Protobuf.Gen.Core</PackageId>
     <DefineConstants>$(DefineConstants);DOTNETCORE</DefineConstants>
+
+	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Version>1.0.0</Version>
+    <Description>基于插件机制的Google Protobuf代码生成工具</Description>   
+    <Product>Protobuf.Gen.Core</Product>
+	<Authors>xuanye</Authors> 
+    <Copyright>Xuanye @ 2017</Copyright>
   </PropertyGroup>
 
 </Project>

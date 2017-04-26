@@ -1,0 +1,10 @@
+language: csharp
+mono: none
+dotnet: 1.0.1
+dist: trusty
+solution: ./src/Protobuf.Gen.sln
+install:
+  - dotnet restore ./src/Protobuf.Gen.sln
+script:
+  - bash ./scripts/publish_package.sh
+
