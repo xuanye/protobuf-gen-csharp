@@ -19,7 +19,10 @@ namespace Protobuf.Gen.Core
         public static string GetFileName(string fileProto)
         {
             string nomalName = fileProto.Split('.')[0];
-            return ConvertCamelCase(nomalName);
+
+            string[] ArrPath = nomalName.Split(new char[]{'/','\\'});
+
+            return ConvertCamelCase(ArrPath[ArrPath.Length-1]);
         }
 
         public static string ConvertCamelCase(string nomalName)
