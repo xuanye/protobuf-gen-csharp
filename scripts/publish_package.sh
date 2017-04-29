@@ -18,7 +18,7 @@ dotnet build ./Protobuf.Gen.Core/Protobuf.Gen.Core.csproj -c Release
 
 versionNumber="1.0.1"
 
-dotnet pack ./Protobuf.Gen.Core/Protobuf.Gen.Core.csproj -c Release -o ../$artifactsFolder
+dotnet pack ./Protobuf.Gen.Core/Protobuf.Gen.Core.csproj -c Release -o ../$artifactsFolder  --version-suffix=$versionNumber
 
 if [ "$TRAVIS_BRANCH" == "master" ]; then
     dotnet nuget push ./$artifactsFolder/Protobuf.Gen.Core.${versionNumber}.nupkg -k $NUGET_KEY -s https://www.nuget.org
