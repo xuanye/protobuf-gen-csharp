@@ -16,7 +16,7 @@ dotnet restore ./Protobuf.Gen.sln
 dotnet build ./Protobuf.Gen.Core/Protobuf.Gen.Core.csproj -c Release
 
 
-versionNumber="1.0.0"
+versionNumber="1.0.1"
 
 dotnet pack ./Protobuf.Gen.Core/Protobuf.Gen.Core.csproj -c Release -o ../$artifactsFolder
 
