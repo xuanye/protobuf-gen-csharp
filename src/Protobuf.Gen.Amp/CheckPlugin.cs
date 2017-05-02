@@ -18,9 +18,10 @@ namespace Protobuf.Gen.Amp
                     CheckByEachFile(protofile);
                 }
                 catch(Exception ex){
-                    response.Error += ex.Message;
+                    response.Error += "file:"+protofile.Name+":"+ ex.Message;
                 }
             }
+
         }
 
         private void CheckByEachFile(FileDescriptorProto protofile)

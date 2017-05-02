@@ -14,12 +14,19 @@ namespace Protobuf.Gen.Amp
             if(request.ProtoFile.Count ==0){
                 return ;
             }
+             string ns = "";
             bool genericEnable =false;
             foreach (var protofile in request.ProtoFile)
             {
                 protofile.Options.CustomOptions.TryGetBool(DotBPEOptions.GENERIC_OBJECTFACTORY, out genericEnable);
                 if (genericEnable)
                 {
+                    ns = Utils.GetFileNamespace(protofile);
+                    if(string.IsNullOrEmpty(ns))
+                    {
+                        response.Error = protofile.Name+" don't set namespace";
+                        return;
+                    }
                     break;
                 }
             }
@@ -43,13 +50,12 @@ namespace Protobuf.Gen.Amp
             sb.AppendLine("using Google.Protobuf.Reflection; ");
             sb.AppendLine("");
 
-            string ns = Utils.GetFileNamespace(request.ProtoFile[0]);
             sb.AppendLine("namespace " + ns + " {");
             //生成代码
 
             sb.AppendLine("public class ProtobufObjectFactory {");
 
-            sb.AppendLine("public static MessageDescriptor GetRequestDescriptor(int serviceId,int messageId)");
+            sb.AppendLine("public static IMessage GetRequestTemplate(int serviceId,int messageId)");
             sb.AppendLine("{");
             foreach (var protofile in request.ProtoFile)
             {
@@ -62,14 +68,14 @@ namespace Protobuf.Gen.Amp
                         byte[] err = Encoding.UTF8.GetBytes(ex.Message+ex.StackTrace);
                         stream.Write(err,0,err.Length);
                     }
-                    response.Error += ex.Message;
+                    response.Error +=  "file:"+protofile.Name+":"+ ex.Message;
                 }
             }
             sb.AppendLine("return null;");
             sb.AppendLine("}");
 
 
-            sb.AppendLine("public static MessageDescriptor GetResponseDescriptor(int serviceId,int messageId)");
+            sb.AppendLine("public static IMessage GetResponseTemplate(int serviceId,int messageId)");
             sb.AppendLine("{");
             foreach (var protofile in request.ProtoFile)
             {
@@ -82,7 +88,7 @@ namespace Protobuf.Gen.Amp
                         byte[] err = Encoding.UTF8.GetBytes(ex.Message+ex.StackTrace);
                         stream.Write(err,0,err.Length);
                     }
-                    response.Error += ex.Message;
+                    response.Error +=  "file:"+protofile.Name+":"+ ex.Message;
                 }
             }
             sb.AppendLine("return null;");
@@ -148,15 +154,15 @@ namespace Protobuf.Gen.Amp
                     throw new Exception("Service" + service.Name + "." + method.Name + " is too large");
                 }
                 //异步方法
-                string outType = Utils.GetTypeName(method.OutputType);
-                string inType = Utils.GetTypeName(method.InputType);
 
-                sb.AppendFormat("if(serviceId == {0} && messageId == {1}){ return {2}.Descriptor ;\n}",serviceId,msgId,type==1?inType:outType);
+
+                string typeName = type==1? Utils.GetTypeName(method.InputType): Utils.GetTypeName(method.OutputType);
+
+                sb.AppendLine("if(serviceId == "+serviceId+" && messageId == "+msgId+"){ return new "+typeName+"() ;\n}");
 
             }
             //循环方法end
 
-            sb.AppendLine("}");
         }
     }
 }

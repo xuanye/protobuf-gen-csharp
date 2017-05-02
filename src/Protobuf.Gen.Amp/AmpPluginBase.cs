@@ -22,7 +22,7 @@ namespace Protobuf.Gen.Amp
                         byte[] err = Encoding.UTF8.GetBytes(ex.Message+ex.StackTrace);
                         stream.Write(err,0,err.Length);
                     }
-                    response.Error += ex.Message;
+                    response.Error += "file:"+protofile.Name+":"+ ex.Message;
                 }
             }
         }
