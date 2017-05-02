@@ -64,7 +64,7 @@ namespace Protobuf.Gen.Amp
 
         private static void GenerateServiceForClient(ServiceDescriptorProto service, StringBuilder sb)
         {
-             int serviceId;
+            int serviceId;
             bool hasServiceId = service.Options.CustomOptions.TryGetInt32(DotBPEOptions.SERVICE_ID, out serviceId);
             if (!hasServiceId || serviceId <= 0)
             {

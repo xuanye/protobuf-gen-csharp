@@ -15,5 +15,9 @@ namespace Protobuf.Gen.Amp
 
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         public const int GENERIC_MARKDOWN_DOC = 51005;
+
+
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
+        public const int GENERIC_OBJECTFACTORY = 51006;
     }
 }
