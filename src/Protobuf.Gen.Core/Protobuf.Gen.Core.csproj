@@ -7,10 +7,10 @@
     <DefineConstants>$(DefineConstants);DOTNETCORE</DefineConstants>
 
 	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Version>1.0.0</Version>
-    <Description>基于插件机制的Google Protobuf代码生成工具</Description>   
+    <Version>$(VersionSuffix)</Version>
+    <Description>基于插件机制的Google Protobuf代码生成工具</Description>
     <Product>Protobuf.Gen.Core</Product>
-	<Authors>xuanye</Authors> 
+	<Authors>xuanye</Authors>
     <Copyright>Xuanye @ 2017</Copyright>
   </PropertyGroup>
 
