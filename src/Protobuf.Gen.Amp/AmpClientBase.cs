@@ -104,12 +104,13 @@ namespace Protobuf.Gen.Amp
                 sb.AppendLine($"AmpMessage message = AmpMessage.CreateRequestMessage({serviceId}, {msgId});");
                 sb.AppendLine("message.Data = request.ToByteArray();");
                 sb.AppendLine("var response = await base.CallInvoker.AsyncCall(message,timeOut);");
-                sb.AppendLine("if (response != null && response.Data !=null)");
+                sb.AppendLine("if (response == null)");
                 sb.AppendLine("{");
+                sb.AppendLine("throw new RpcException(\"error,response is null !\");");
+                sb.AppendLine("}");
                 sb.AppendLine($"return {outType}.Parser.ParseFrom(response.Data);");
                 sb.AppendLine("}");
-                sb.AppendLine("throw new RpcException(\"请求出错，请检查!\");");
-                sb.AppendLine("}");
+
                 sb.AppendLine();
                 sb.AppendLine("//同步方法");
                 sb.AppendLine($"public {outType} {method.Name}({inType} request)");
@@ -117,15 +118,14 @@ namespace Protobuf.Gen.Amp
                 sb.AppendLine($"AmpMessage message = AmpMessage.CreateRequestMessage({serviceId}, {msgId});");
                 sb.AppendLine("message.Data = request.ToByteArray();");
                 sb.AppendLine("var response =  base.CallInvoker.BlockingCall(message);");
-                sb.AppendLine("if (response != null && response.Data !=null)");
+                sb.AppendLine("if (response == null)");
                 sb.AppendLine("{");
+                sb.AppendLine("throw new RpcException(\"error,response is null !\");");
+                sb.AppendLine("}");
                 sb.AppendLine($"return {outType}.Parser.ParseFrom(response.Data);");
                 sb.AppendLine("}");
-                sb.AppendLine("throw new RpcException(\"请求出错，请检查!\");");
-                sb.AppendLine("}");
-            }
             //循环方法end
-
+            }
             sb.AppendLine("}");
             //类结束
         }

@@ -70,9 +70,10 @@ namespace Protobuf.Gen.Amp
                 throw new Exception("Service="+service.Name+ "ServiceId too large" );
             }
 
-            sb.AppendFormat("public abstract class {0}Base : IServiceActor<AmpMessage> \n", service.Name);
+            sb.AppendFormat("public abstract class {0}Base : ServiceActorBase \n", service.Name);
             sb.AppendLine("{");
-            sb.AppendLine("public string Id => \""+serviceId+"$0\";");
+
+            sb.AppendLine("public override string Id => \""+serviceId+"$0\";");
 
 
 
@@ -114,14 +115,18 @@ namespace Protobuf.Gen.Amp
 
                 //拼装if调用语句
                 sbIfState.AppendFormat("//方法{0}.{1}\n",service.Name,method.Name);
-                sbIfState.AppendLine("if(req.MessageId == "+msgId+"){return this.Receive"+method.Name+"Async(context, req);}");
+                sbIfState.AppendLine("case "+msgId+": return this.Receive"+method.Name+"Async(context, req);");
             }
+
             //循环方法end
             //生成主调用代码
-            sb.AppendLine("public Task ReceiveAsync(IRpcContext<AmpMessage> context, AmpMessage req)");
+            sb.AppendLine("public override Task ReceiveAsync(IRpcContext<AmpMessage> context, AmpMessage req)");
             sb.AppendLine("{");
+
+            sb.AppendLine("switch(req.MessageId){");
             sb.Append(sbIfState);
-            sb.AppendLine("return Task.CompletedTask;");
+            sb.AppendLine("default: return base.ReceiveNoFonundAsync(context, req);");
+            sb.AppendLine("}"); //end switch case
             sb.AppendLine("}");
 
 
