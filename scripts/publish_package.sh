@@ -22,4 +22,5 @@ dotnet pack ./Protobuf.Gen.Core/Protobuf.Gen.Core.csproj -c Release -o ../$artif
 
 if [ "$TRAVIS_BRANCH" == "master" ]; then
     #dotnet nuget push ./$artifactsFolder/Protobuf.Gen.Core.${versionNumber}.nupkg -k $NUGET_KEY -s https://www.nuget.org
+    echo "DON'T PUSH"
 fi
