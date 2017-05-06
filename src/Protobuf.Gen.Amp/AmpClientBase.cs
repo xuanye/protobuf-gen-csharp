@@ -110,7 +110,7 @@ namespace Protobuf.Gen.Amp
                 sb.AppendLine("}");
                 sb.AppendLine("if (response.Data == null)");
                 sb.AppendLine("{");
-                sb.AppendLine($"return new {outType}()");
+                sb.AppendLine($"return new {outType}();");
                 sb.AppendLine("}");
 
                 sb.AppendLine($"return {outType}.Parser.ParseFrom(response.Data);");
@@ -129,7 +129,7 @@ namespace Protobuf.Gen.Amp
                 sb.AppendLine("}");
                 sb.AppendLine("if (response.Data == null)");
                 sb.AppendLine("{");
-                sb.AppendLine($"return new {outType}()");
+                sb.AppendLine($"return new {outType}();");
                 sb.AppendLine("}");
                 sb.AppendLine($"return {outType}.Parser.ParseFrom(response.Data);");
                 sb.AppendLine("}");
