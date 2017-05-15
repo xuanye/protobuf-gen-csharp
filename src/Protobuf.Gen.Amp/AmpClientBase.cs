@@ -108,6 +108,11 @@ namespace Protobuf.Gen.Amp
                 sb.AppendLine("{");
                 sb.AppendLine("throw new RpcException(\"error,response is null !\");");
                 sb.AppendLine("}");
+                sb.AppendLine("if (response.Data == null)");
+                sb.AppendLine("{");
+                sb.AppendLine($"return new {outType}();");
+                sb.AppendLine("}");
+
                 sb.AppendLine($"return {outType}.Parser.ParseFrom(response.Data);");
                 sb.AppendLine("}");
 
@@ -121,6 +126,10 @@ namespace Protobuf.Gen.Amp
                 sb.AppendLine("if (response == null)");
                 sb.AppendLine("{");
                 sb.AppendLine("throw new RpcException(\"error,response is null !\");");
+                sb.AppendLine("}");
+                sb.AppendLine("if (response.Data == null)");
+                sb.AppendLine("{");
+                sb.AppendLine($"return new {outType}();");
                 sb.AppendLine("}");
                 sb.AppendLine($"return {outType}.Parser.ParseFrom(response.Data);");
                 sb.AppendLine("}");
