@@ -64,7 +64,7 @@ namespace Protobuf.Gen.Amp
             int serviceId;
             bool hasServiceId = service.Options.CustomOptions.TryGetInt32(DotBPEOptions.SERVICE_ID, out serviceId);
             if(!hasServiceId || serviceId<=0){
-                throw new Exception("Service="+service.Name+" ServiceId NOT_FOUND");
+                throw new Exception("Service="+service.Name+" ServiceId not found");
             }
             if(serviceId>=ushort.MaxValue){
                 throw new Exception("Service="+service.Name+ "ServiceId too large" );
@@ -85,7 +85,7 @@ namespace Protobuf.Gen.Amp
                 int msgId ;
                 bool hasMsgId= method.Options.CustomOptions.TryGetInt32(DotBPEOptions.MESSAGE_ID,out msgId);
                 if(!hasMsgId || msgId<=0){
-                    throw new Exception("Service"+service.Name+"."+method.Name+" ' MessageId NOT_FINDOUT ");
+                    throw new Exception("Service"+service.Name+"."+method.Name+" ' MessageId  not found ");
                 }
                 if(msgId>=ushort.MaxValue){
                     throw new Exception("Service" + service.Name+"."+method.Name+" is too large");
@@ -125,7 +125,7 @@ namespace Protobuf.Gen.Amp
 
             sb.AppendLine("switch(req.MessageId){");
             sb.Append(sbIfState);
-            sb.AppendLine("default: return base.ReceiveNoFonundAsync(context, req);");
+            sb.AppendLine("default: return base.ReceiveNotFoundAsync(context, req);");
             sb.AppendLine("}"); //end switch case
             sb.AppendLine("}");
 
