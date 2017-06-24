@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>   
+    <TargetFramework>netstandard1.6</TargetFramework>
     <AssemblyName>Protobuf.Gen</AssemblyName>
 	<DebugType>portable</DebugType>
     <OutputType>Exe</OutputType>
     <PackageId>Protobuf.Gen</PackageId>
     <DefineConstants>$(DefineConstants);DOTNETCORE</DefineConstants>
-    <RuntimeIdentifiers>win10-x64;osx.10.10-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win7-x86;win7-x64;win10-x64;osx.10.10-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
 
