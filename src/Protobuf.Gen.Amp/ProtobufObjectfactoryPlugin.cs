@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Text;
 using Google.Protobuf.Compiler;
 using Google.Protobuf.Reflection;
@@ -62,13 +61,8 @@ namespace Protobuf.Gen.Amp
                 try{
                     GenerateByEachFile(protofile, response,sb,1);
                 }
-                catch(Exception ex){
-                    using (Stream stream = File.Create("./protobuf.gen.amp.error"))
-                    {
-                        byte[] err = Encoding.UTF8.GetBytes(ex.Message+ex.StackTrace);
-                        stream.Write(err,0,err.Length);
-                    }
-                    response.Error +=  "file:"+protofile.Name+":"+ ex.Message;
+                catch(Exception ex){                  
+                    response.Error += "file:" + protofile.Name + ":" + ex.Message + ex.StackTrace;
                 }
             }
             sb.AppendLine("return null;");
@@ -82,13 +76,8 @@ namespace Protobuf.Gen.Amp
                 try{
                     GenerateByEachFile(protofile, response,sb,2);
                 }
-                catch(Exception ex){
-                    using (Stream stream = File.Create("./protobuf.gen.amp.error"))
-                    {
-                        byte[] err = Encoding.UTF8.GetBytes(ex.Message+ex.StackTrace);
-                        stream.Write(err,0,err.Length);
-                    }
-                    response.Error +=  "file:"+protofile.Name+":"+ ex.Message;
+                catch(Exception ex){                   
+                    response.Error +=  "file:"+protofile.Name+":"+ ex.Message + ex.StackTrace;
                 }
             }
             sb.AppendLine("return null;");

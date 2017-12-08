@@ -1,13 +1,14 @@
-﻿using Google.Protobuf;
-using Google.Protobuf.Compiler;
+
 using System;
-using System.Reflection;
-using System.Linq;
-using Protobuf.Gen.Core;
-using Google.Protobuf.Compatibility;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.Loader;
+using Google.Protobuf;
+using Google.Protobuf.Compiler;
+using Protobuf.Gen.Core;
+
 
 namespace DotBPE.ProtobufPlugin
 {
