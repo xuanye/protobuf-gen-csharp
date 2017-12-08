@@ -7,7 +7,7 @@
     <PackageId>Protobuf.Gen</PackageId>	
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <DefineConstants>$(DefineConstants);DOTNETCORE</DefineConstants>
-    <RuntimeIdentifiers>win10-x64;osx.10.10-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win7-x86;win7-x64;win10-x64;osx.10.10-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
 <ItemGroup>

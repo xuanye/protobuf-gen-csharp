@@ -36,7 +36,6 @@ classes
 data
 temp
 doc/site
-dist
 # Logs
 logs
 *.log
