@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using Google.Protobuf.Compiler;
 using Google.Protobuf.Reflection;
@@ -70,10 +70,10 @@ namespace Protobuf.Gen.Amp
                 throw new Exception("Service="+service.Name+ "ServiceId too large" );
             }
 
-            sb.AppendFormat("public abstract class {0}Base : ServiceActorBase \n", service.Name);
+            sb.AppendFormat("public abstract class {0}Base : ServiceActor \n", service.Name);
             sb.AppendLine("{");
 
-            sb.AppendLine("public override string Id => \""+serviceId+"$0\";");
+            sb.AppendLine("protected override int ServiceId => "+serviceId+";");
 
 
 
@@ -108,7 +108,7 @@ namespace Protobuf.Gen.Amp
                 sb.AppendLine("}");
                 sb.AppendLine($"var data = await {method.Name}Async(request);");
                 sb.AppendLine("var response = AmpMessage.CreateResponseMessage(req.ServiceId, req.MessageId);");
-                sb.AppendLine("response.Sequence = req.Sequence;");
+                //sb.AppendLine("response.Sequence = req.Sequence;");
                 sb.AppendLine("response.Data = data.ToByteArray();");
                 sb.AppendLine("return response;");
                 sb.AppendLine("}");

@@ -82,6 +82,10 @@ namespace Protobuf.Gen.Amp
             sb.AppendLine("{");
             sb.AppendLine("}");
 
+            sb.AppendLine($"public {service.Name}Client(string remoteAddress) : base(remoteAddress)");
+            sb.AppendLine("{");
+            sb.AppendLine("}");
+
             //循环方法
             foreach (var method in service.Method)
             {

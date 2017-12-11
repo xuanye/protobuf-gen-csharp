@@ -14,4 +14,8 @@
  <ProjectReference Include="..\Protobuf.Gen.Core\Protobuf.Gen.Core.csproj" />
 </ItemGroup>
 
+<ItemGroup>
+  <PackageReference Include="ILLink.Tasks" Version="0.1.4-preview-981901" />
+</ItemGroup>
+
 </Project>
