@@ -11,4 +11,9 @@
     <ItemGroup>
         <ProjectReference Include="..\Protobuf.Gen.Core\Protobuf.Gen.Core.csproj" />
     </ItemGroup>
+
+
+    <ItemGroup>
+      <Folder Include="DotBPE\Protobuf\" />
+    </ItemGroup>
 </Project>

@@ -19,5 +19,10 @@ namespace Protobuf.Gen.Amp
 
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         public const int GENERIC_OBJECTFACTORY = 51006;
+
+
+        public const int GENERIC_HTTPAPIROUTES = 51007;
+
+        public const int HTTP_API_OPTION = 51003;
     }
 }

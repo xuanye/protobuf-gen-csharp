@@ -70,10 +70,10 @@ namespace Protobuf.Gen.Amp
                 throw new Exception("Service="+service.Name+ "ServiceId too large" );
             }
 
-            sb.AppendFormat("public abstract class {0}Base : ServiceActor \n", service.Name);
-            sb.AppendLine("{");
+            sb.AppendFormat("   public abstract class {0}Base : ServiceActor \n", service.Name);
+            sb.AppendLine("   {");
 
-            sb.AppendLine("protected override int ServiceId => "+serviceId+";");
+            sb.AppendLine("      protected override int ServiceId => " + serviceId+";");
 
 
 
@@ -95,48 +95,53 @@ namespace Protobuf.Gen.Amp
                 string inType =  Utils.GetTypeName(method.InputType);
 
 
-                sb.AppendLine("//调用委托");
-                sb.AppendLine($"private async Task<AmpMessage> Process{method.Name}Async(AmpMessage req)");
-                sb.AppendLine("{");
+                sb.AppendLine("      //调用委托");
+                sb.AppendLine($"      private async Task<AmpMessage> Process{method.Name}Async(AmpMessage req)");
+                sb.AppendLine("      {");
                 //添加判断req.Data == null;
-                sb.AppendLine($"{inType} request = null;");
-                sb.AppendLine("if(req.Data == null ){");
-                sb.AppendLine($"   request = new {inType}();");
-                sb.AppendLine("}");
-                sb.AppendLine("else {");
-                sb.AppendLine($"request = {inType}.Parser.ParseFrom(req.Data);");
-                sb.AppendLine("}");
-                sb.AppendLine($"var data = await {method.Name}Async(request);");
-                sb.AppendLine("var response = AmpMessage.CreateResponseMessage(req.ServiceId, req.MessageId);");
-                //sb.AppendLine("response.Sequence = req.Sequence;");
-                sb.AppendLine("response.Data = data.ToByteArray();");
-                sb.AppendLine("return response;");
-                sb.AppendLine("}");
+                sb.AppendLine($"         {inType} request = null;");
+                sb.AppendLine("");
+                sb.AppendLine("         if(req.Data == null ){");
+                sb.AppendLine($"            request = new {inType}();");
+                sb.AppendLine("         }");
+                sb.AppendLine("         else {");
+                sb.AppendLine($"            request = {inType}.Parser.ParseFrom(req.Data);");
+                sb.AppendLine("         }");
+                sb.AppendLine("");
+                sb.AppendLine($"         var result = await {method.Name}Async(request);");
+                sb.AppendLine("         var response = AmpMessage.CreateResponseMessage(req.ServiceId, req.MessageId);");
+                sb.AppendLine("         response.Code = result.Code;");
+                sb.AppendLine("         if( result.Data !=null )");
+                sb.AppendLine("         {");
+                sb.AppendLine("             response.Data = result.Data.ToByteArray();");
+                sb.AppendLine("         }");
+                sb.AppendLine("         return response;");
+                sb.AppendLine("      }");
 
                 sb.AppendLine();
+         
 
-
-                sb.AppendLine("//抽象方法");
-                sb.AppendLine($"public abstract Task<{outType}> {method.Name}Async({inType} request);");
+                sb.AppendLine("      //抽象方法");
+                sb.AppendLine($"      public abstract Task<RpcResult<{outType}>> {method.Name}Async({inType} request);");
 
                 //拼装if调用语句
-                sbIfState.AppendFormat("//方法{0}.{1}\n",service.Name,method.Name);
-                sbIfState.AppendLine("case "+msgId+": return this.Process"+method.Name+"Async(req);");
+                sbIfState.AppendFormat("            //方法{0}.{1}\n", service.Name,method.Name);
+                sbIfState.AppendLine("            case " + msgId+": return this.Process"+method.Name+"Async(req);");
             }
 
             //循环方法end
             //生成主调用代码
-            sb.AppendLine("public override Task<AmpMessage> ProcessAsync(AmpMessage req)");
-            sb.AppendLine("{");
+            sb.AppendLine("      public override Task<AmpMessage> ProcessAsync(AmpMessage req)");
+            sb.AppendLine("      {");
 
-            sb.AppendLine("switch(req.MessageId){");
+            sb.AppendLine("         switch(req.MessageId){");
             sb.Append(sbIfState);
-            sb.AppendLine("default: return base.ProcessNotFoundAsync(req);");
-            sb.AppendLine("}"); //end switch case
-            sb.AppendLine("}");
+            sb.AppendLine("            default: return base.ProcessNotFoundAsync(req);");
+            sb.AppendLine("         }"); //end switch case
+            sb.AppendLine("      }");
 
 
-            sb.AppendLine("}");
+            sb.AppendLine("   }");
             //类结束
         }
     }

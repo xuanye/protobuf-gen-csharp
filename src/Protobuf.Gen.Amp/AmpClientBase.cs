@@ -75,16 +75,16 @@ namespace Protobuf.Gen.Amp
                 throw new Exception("Service=" + service.Name + "ServiceId too large");
             }
 
-            sb.AppendFormat("public sealed class {0}Client : AmpInvokeClient \n",service.Name);
-            sb.AppendLine("{");
+            sb.AppendFormat("   public sealed class {0}Client : AmpInvokeClient \n",service.Name);
+            sb.AppendLine("    {");
             //构造函数
-            sb.AppendLine($"public {service.Name}Client(IRpcClient<AmpMessage> client) : base(client)");
-            sb.AppendLine("{");
-            sb.AppendLine("}");
+            sb.AppendLine($"        public {service.Name}Client(IRpcClient<AmpMessage> client) : base(client)");
+            sb.AppendLine("        {");
+            sb.AppendLine("        }");
 
-            sb.AppendLine($"public {service.Name}Client(string remoteAddress) : base(remoteAddress)");
-            sb.AppendLine("{");
-            sb.AppendLine("}");
+            sb.AppendLine($"        public {service.Name}Client(string remoteAddress) : base(remoteAddress)");
+            sb.AppendLine("        {");
+            sb.AppendLine("        }");
 
             //循环方法
             foreach (var method in service.Method)
@@ -103,43 +103,62 @@ namespace Protobuf.Gen.Amp
                 string outType = Utils.GetTypeName(method.OutputType);
                 string inType = Utils.GetTypeName(method.InputType);
 
-                sb.AppendLine($"public async Task<{outType}> {method.Name}Async({inType} request,int timeOut=3000)");
-                sb.AppendLine("{");
-                sb.AppendLine($"AmpMessage message = AmpMessage.CreateRequestMessage({serviceId}, {msgId});");
-                sb.AppendLine("message.Data = request.ToByteArray();");
-                sb.AppendLine("var response = await base.CallInvoker.AsyncCall(message,timeOut);");
-                sb.AppendLine("if (response == null)");
-                sb.AppendLine("{");
-                sb.AppendLine("throw new RpcException(\"error,response is null !\");");
-                sb.AppendLine("}");
-                sb.AppendLine("if (response.Data == null)");
-                sb.AppendLine("{");
-                sb.AppendLine($"return new {outType}();");
-                sb.AppendLine("}");
+                sb.AppendLine($"        public async Task<RpcResult<{outType}>> {method.Name}Async({inType} request,int timeOut=3000)");
+                sb.AppendLine("        {");
+                sb.AppendLine($"            AmpMessage message = AmpMessage.CreateRequestMessage({serviceId}, {msgId});");
+                sb.AppendLine("            message.Data = request.ToByteArray();");
+                sb.AppendLine("            var response = await base.CallInvoker.AsyncCall(message,timeOut);");
+                sb.AppendLine("            if (response == null)");
+                sb.AppendLine("            {");
+                sb.AppendLine("                throw new RpcException(\"error,response is null !\");");
+                sb.AppendLine("            }");
+                sb.AppendLine($"            var result = new RpcResult<{outType}>();");
+                sb.AppendLine("            if (response.Code != 0)");
+                sb.AppendLine("            {");
+                sb.AppendLine("                result.Code = response.Code;");
+                sb.AppendLine("            }");
+                sb.AppendLine("            else if (response.Data == null)");
+                sb.AppendLine("            {");
+                sb.AppendLine("                result.Code = ErrorCodes.CODE_INTERNAL_ERROR;");
+                sb.AppendLine("            }");
+                sb.AppendLine("            else");
+                sb.AppendLine("            {");
+                sb.AppendLine($"                result.Data = {outType}.Parser.ParseFrom(response.Data);");
+                sb.AppendLine("            }");
 
-                sb.AppendLine($"return {outType}.Parser.ParseFrom(response.Data);");
-                sb.AppendLine("}");
+                sb.AppendLine("            return result;");
+                sb.AppendLine("        }");
 
                 sb.AppendLine();
-                sb.AppendLine("//同步方法");
-                sb.AppendLine($"public {outType} {method.Name}({inType} request)");
-                sb.AppendLine("{");
-                sb.AppendLine($"AmpMessage message = AmpMessage.CreateRequestMessage({serviceId}, {msgId});");
-                sb.AppendLine("message.Data = request.ToByteArray();");
-                sb.AppendLine("var response =  base.CallInvoker.BlockingCall(message);");
-                sb.AppendLine("if (response == null)");
-                sb.AppendLine("{");
-                sb.AppendLine("throw new RpcException(\"error,response is null !\");");
-                sb.AppendLine("}");
-                sb.AppendLine("if (response.Data == null)");
-                sb.AppendLine("{");
-                sb.AppendLine($"return new {outType}();");
-                sb.AppendLine("}");
-                sb.AppendLine($"return {outType}.Parser.ParseFrom(response.Data);");
-                sb.AppendLine("}");
+                sb.AppendLine("        //同步方法");
+                sb.AppendLine($"        public RpcResult<{outType}> {method.Name}({inType} request)");
+                sb.AppendLine("        {");
+                sb.AppendLine($"            AmpMessage message = AmpMessage.CreateRequestMessage({serviceId}, {msgId});");
+                sb.AppendLine("            message.Data = request.ToByteArray();");
+                sb.AppendLine("            var response =  base.CallInvoker.BlockingCall(message);");
+                sb.AppendLine("            if (response == null)");
+                sb.AppendLine("            {");
+                sb.AppendLine("                throw new RpcException(\"error,response is null !\");");
+                sb.AppendLine("            }");
+                sb.AppendLine($"            var result = new RpcResult<{outType}>();");
+                sb.AppendLine("            if (response.Code != 0)");
+                sb.AppendLine("            {");
+                sb.AppendLine("                result.Code = response.Code;");
+                sb.AppendLine("            }");
+                sb.AppendLine("            else if (response.Data == null)");
+                sb.AppendLine("            {");
+                sb.AppendLine("                result.Code = ErrorCodes.CODE_INTERNAL_ERROR;");
+                sb.AppendLine("            }");
+                sb.AppendLine("            else");
+                sb.AppendLine("            {");
+                sb.AppendLine($"                result.Data = {outType}.Parser.ParseFrom(response.Data);");
+                sb.AppendLine("            }");
+
+                sb.AppendLine("            return result;");
+                sb.AppendLine("         }");
             //循环方法end
             }
-            sb.AppendLine("}");
+            sb.AppendLine("     }");
             //类结束
         }
     }
