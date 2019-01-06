@@ -1,6 +1,6 @@
 # protobuf-gen-plugin
-
 ----
+**注意：请不要使用该类库，已弃用，请使用protoc-gen-dotbpe 替代**
 基于C#的 Google Protobuf 代码生成工具
 基于插件的机制开发，程序自动扫描plugins目录，发现查找所有继承IPlugin接口的类，依次交由这些插件执行，来达到代码生成的目录
 
